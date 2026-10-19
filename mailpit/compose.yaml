@@ -1,7 +1,7 @@
 name: mailpit
 services:
   mailpit:
-    image: docker.io/axllent/mailpit:latest
+    image: ghcr.io/axllent/mailpit:latest
     container_name: mailpit
     environment:
       MP_MAX_MESSAGES: 5000
