@@ -1,7 +1,7 @@
 name: redis
 services:
   redis:
-    image: docker.io/library/redis:7
+    image: mirror.gcr.io/library/redis:7
     container_name: redis
     # Usuario 'default' deshabilitado; solo 'developer' con todos los permisos
     command: >
