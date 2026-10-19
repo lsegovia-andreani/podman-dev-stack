@@ -1,0 +1,23 @@
+name: redis
+services:
+  redis:
+    image: docker.io/library/redis:7
+    container_name: redis
+    # Usuario 'default' deshabilitado; solo 'developer' con todos los permisos
+    command: >
+      redis-server --appendonly yes
+      --user default off
+      --user developer on >Puppy.1518 ~* &* +@all
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli --user developer --pass 'Puppy.1518' --no-auth-warning ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  redis-data:

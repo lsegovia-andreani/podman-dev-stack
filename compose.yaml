@@ -1,0 +1,7 @@
+# Levanta todo el stack: podman compose up -d
+include:
+  - mssql/compose.yaml
+  - mongodb/compose.yaml
+  - redis/compose.yaml
+  - redpanda/compose.yaml
+  - mailpit/compose.yaml

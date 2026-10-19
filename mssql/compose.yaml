@@ -1,0 +1,35 @@
+name: mssql
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql
+    environment:
+      ACCEPT_EULA: "Y"
+      # 'sa' es obligatorio en SQL Server; el usuario 'developer' se crea con mssql-init
+      MSSQL_SA_PASSWORD: Puppy.1518
+      MSSQL_PID: Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P 'Puppy.1518' -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    restart: unless-stopped
+
+  mssql-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql-init
+    depends_on:
+      mssql:
+        condition: service_healthy
+    volumes:
+      - ./init.sql:/init.sql:ro,Z
+    command: /opt/mssql-tools18/bin/sqlcmd -C -S mssql -U sa -P Puppy.1518 -i /init.sql
+    restart: "no"
+
+volumes:
+  mssql-data:
